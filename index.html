@@ -1,505 +1,427 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SFS Leadership Presentation</title>
-<style>
-:root {
-  --bg:#020204;
-  --fg:#f6f7fb;
-  --muted:rgba(246,247,251,.62);
-  --red:#ff1f45;
-  --deepred:#8d001e;
-  --blue:#49e7ff;
-  --pink:#ff41cf;
-  --gold:#ffe2a1;
-  --glass:rgba(255,255,255,.07);
-}
-*{box-sizing:border-box}
-html,body{margin:0;height:100%;overflow:hidden;background:#000;color:var(--fg);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Arial,sans-serif}
-body{user-select:none}
-#deck{position:fixed;inset:0;overflow:hidden;background:#000;isolation:isolate}
-#starfield{position:absolute;inset:0;width:100%;height:100%;z-index:0;background:radial-gradient(circle at 30% 20%,rgba(255,31,69,.10),transparent 32%),radial-gradient(circle at 75% 30%,rgba(73,231,255,.10),transparent 30%),#000}
-.vignette{position:absolute;inset:0;z-index:4;pointer-events:none;background:radial-gradient(circle at center,transparent 34%,rgba(0,0,0,.46) 74%,rgba(0,0,0,.92));}
-.topbar{position:absolute;left:28px;right:28px;top:22px;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:16px}
-.brand{display:flex;align-items:center;gap:10px;font-weight:950;letter-spacing:.16em;font-size:12px;color:white;text-transform:uppercase}
-.brand img{width:36px;height:36px;object-fit:contain;filter:drop-shadow(0 0 14px rgba(73,231,255,.42))}
-.controls{display:flex;align-items:center;gap:10px}
-.ctrl{height:38px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.07);color:white;border-radius:999px;padding:0 14px;font-weight:850;font-size:12px;letter-spacing:.04em;cursor:pointer;backdrop-filter:blur(18px);transition:.2s ease}
-.ctrl:hover{transform:translateY(-2px);background:rgba(255,255,255,.13)}
-.ctrl.sound-on{color:#050505;background:linear-gradient(135deg,#fff,var(--blue),var(--pink));border:0}
-.counter{color:rgba(255,255,255,.58);font-size:12px;font-weight:850;letter-spacing:.14em}
-.progress{position:absolute;left:0;right:0;bottom:0;height:4px;background:rgba(255,255,255,.09);z-index:21}
-#progressFill{height:100%;width:0;background:linear-gradient(90deg,var(--red),#fff,var(--blue),var(--pink));box-shadow:0 0 22px rgba(73,231,255,.4);transition:width .55s cubic-bezier(.2,.8,.2,1)}
-.dots{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);z-index:22;display:flex;gap:8px}
-.dot{width:8px;height:8px;border-radius:50%;border:0;background:rgba(255,255,255,.26);cursor:pointer;padding:0;transition:.2s ease}
-.dot.active{width:28px;border-radius:99px;background:linear-gradient(90deg,var(--red),var(--blue));box-shadow:0 0 18px rgba(73,231,255,.35)}
-.nav-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:22;width:52px;height:52px;border-radius:50%;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:white;font-size:24px;cursor:pointer;backdrop-filter:blur(20px);transition:.2s ease}
-.nav-arrow:hover{transform:translateY(-50%) scale(1.08);background:rgba(255,255,255,.14)}
-#prev{left:22px}#next{right:22px}
-.sound-gate{position:absolute;inset:0;z-index:50;display:grid;place-items:center;background:radial-gradient(circle at center,rgba(73,231,255,.12),rgba(0,0,0,.93) 62%);transition:.55s ease}
-.sound-gate.hidden{opacity:0;pointer-events:none;filter:blur(10px)}
-.gate-card{width:min(560px,88vw);border-radius:38px;padding:38px;text-align:center;background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.14);box-shadow:0 34px 110px rgba(0,0,0,.58);backdrop-filter:blur(24px)}
-.gate-card img{width:92px;height:92px;object-fit:contain;margin-bottom:14px;filter:drop-shadow(0 0 25px rgba(73,231,255,.42))}
-.gate-card h2{margin:0;font-size:clamp(42px,7vw,76px);letter-spacing:-.07em;line-height:.9;text-transform:uppercase}
-.gate-card p{color:var(--muted);font-size:17px;line-height:1.55;margin:18px auto 28px;max-width:400px}
-.gate-card button{border:0;border-radius:999px;padding:16px 24px;color:#060606;font-weight:950;font-size:14px;background:linear-gradient(135deg,#fff,var(--blue),var(--pink));cursor:pointer;box-shadow:0 20px 70px rgba(73,231,255,.22)}
-.slide{position:absolute;inset:0;display:grid;grid-template-columns:.95fr 1.05fr;gap:28px;align-items:center;padding:90px clamp(70px,8vw,130px);opacity:0;pointer-events:none;transform:scale(1.03) translateY(26px);filter:blur(18px);transition:opacity .75s ease, transform .95s cubic-bezier(.16,.84,.24,1), filter .75s ease;z-index:2}
-.slide.active{opacity:1;pointer-events:auto;transform:scale(1) translateY(0);filter:blur(0);z-index:5}
-.slide.leaving{opacity:0;transform:scale(.985) translateY(-24px);filter:blur(14px)}
-.slide-bg{position:absolute;inset:0;z-index:-1;overflow:hidden}
-.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:72px 72px;mask-image:linear-gradient(to bottom,transparent,black 20%,black 75%,transparent);transform:perspective(700px) rotateX(68deg) translateY(28%);transform-origin:bottom;opacity:.36;animation:gridFlow 9s linear infinite}
-@keyframes gridFlow{to{background-position:0 72px,72px 0}}
-.fog{position:absolute;width:58vw;aspect-ratio:1;border-radius:50%;filter:blur(34px);opacity:.42;animation:fogMove 12s ease-in-out infinite alternate}
-.f1{left:-14vw;top:8vh;background:radial-gradient(circle,rgba(255,31,69,.20),transparent 62%)}
-.f2{right:-18vw;bottom:4vh;background:radial-gradient(circle,rgba(73,231,255,.20),transparent 62%);animation-delay:-4s}
-@keyframes fogMove{to{transform:translate3d(40px,-24px,0) scale(1.08)}}
-.slide-copy{position:relative;z-index:6;max-width:680px}
-.kicker{margin:0 0 16px;color:var(--blue);font-size:12px;font-weight:950;letter-spacing:.32em;text-transform:uppercase;text-shadow:0 0 18px rgba(73,231,255,.52)}
-h1{margin:0;font-size:clamp(64px,9vw,150px);line-height:.82;letter-spacing:-.085em;text-transform:uppercase;font-weight:950;background:linear-gradient(180deg,#fff,#f5f5f5 35%,var(--blue) 68%,var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 44px rgba(73,231,255,.18))}
-.subtitle{font-size:clamp(22px,3vw,42px);line-height:1;color:white;margin:22px 0 0;font-weight:850;letter-spacing:-.04em}
-.content{margin-top:32px}
-ul{list-style:none;padding:0;margin:0;display:grid;gap:12px}
-li,.mini-card{position:relative;border-radius:26px;padding:16px 18px;background:rgba(255,255,255,.075);border:1px solid rgba(255,255,255,.13);box-shadow:0 18px 60px rgba(0,0,0,.25);font-size:clamp(18px,2vw,25px);font-weight:760;line-height:1.24;overflow:hidden}
-li:before,.mini-card:before{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent,rgba(255,255,255,.13),transparent);transform:translateX(-140%);animation:sweep 5.5s ease-in-out infinite}
-@keyframes sweep{0%,70%{transform:translateX(-140%)}100%{transform:translateX(140%)}}
-.card-cloud,.radar-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
-.mini-card span{display:block;color:var(--red);font-size:13px;letter-spacing:.2em;font-weight:950;margin-bottom:14px}
-.mini-card p{margin:0;color:white}
-.slide-visual{position:relative;z-index:5;min-height:520px;display:grid;place-items:center;perspective:1400px}
-.title-machine{position:relative;width:min(540px,70vw);aspect-ratio:1;display:grid;place-items:center}
-.title-machine img{width:38%;height:38%;object-fit:contain;z-index:5;filter:drop-shadow(0 0 30px rgba(73,231,255,.48));animation:logoFloat 3.5s ease-in-out infinite alternate}
-@keyframes logoFloat{to{transform:scale(1.06) translateY(-8px)}}
-.lens{position:absolute;border-radius:50%;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 70px rgba(73,231,255,.12), inset 0 0 60px rgba(255,255,255,.04)}
-.l1{inset:0;animation:spin 18s linear infinite;background:conic-gradient(transparent,rgba(73,231,255,.23),transparent,rgba(255,31,69,.20),transparent)}
-.l2{inset:16%;animation:spin 11s linear infinite reverse;border-style:dashed}
-.l3{inset:31%;animation:pulse 2.8s ease-in-out infinite alternate;background:radial-gradient(circle,rgba(255,255,255,.09),transparent 66%)}
-@keyframes spin{to{transform:rotate(360deg)}}@keyframes pulse{to{transform:scale(1.08);opacity:.72}}
-.curtain{position:absolute;top:0;bottom:0;width:34%;background:repeating-linear-gradient(90deg,var(--deepred),var(--red) 14%,#3b000b 22%);filter:drop-shadow(0 0 30px rgba(255,31,69,.2));opacity:.78}
-.curtain-left{left:-10%;clip-path:polygon(0 0,100% 0,78% 100%,0 100%);animation:curtainL 5s ease-in-out infinite alternate}
-.curtain-right{right:-10%;clip-path:polygon(0 0,100% 0,100% 100%,22% 100%);animation:curtainR 5s ease-in-out infinite alternate}
-@keyframes curtainL{to{transform:translateX(-15px)}}@keyframes curtainR{to{transform:translateX(15px)}}
-.booth-visual{position:relative;width:min(720px,88vw);height:460px;display:grid;place-items:center;transform:rotateX(4deg)}
-.curtain-board{position:absolute;left:4%;top:5%;width:48%;height:82%;border-radius:28px;background:repeating-linear-gradient(90deg,#3b000b,#e50f32 12%,#700016 21%);box-shadow:0 30px 100px rgba(0,0,0,.52),0 0 55px rgba(255,31,69,.2);display:grid;place-items:center;animation:floatA 5s ease-in-out infinite alternate}
-.ipad-hole{width:46%;height:38%;border-radius:24px;background:#020204;border:6px solid rgba(255,255,255,.75);display:grid;place-items:center;text-align:center;font-weight:950;letter-spacing:.08em;box-shadow:inset 0 0 30px rgba(73,231,255,.2),0 0 45px rgba(73,231,255,.16)}
-.ipad-hole small{font-size:11px;color:var(--muted);letter-spacing:.2em;text-transform:uppercase}
-.info-board{position:absolute;right:6%;top:15%;width:35%;height:68%;border-radius:26px;background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,.05));border:1px solid rgba(255,255,255,.16);box-shadow:0 30px 90px rgba(0,0,0,.42);padding:24px;display:grid;gap:12px;animation:floatB 5.4s ease-in-out infinite alternate}
-.info-board b{font-size:25px;letter-spacing:-.04em}.info-board span{background:rgba(255,255,255,.08);border-radius:16px;padding:11px 12px;color:rgba(255,255,255,.72);font-weight:850}
-.table-line{position:absolute;left:0;right:0;bottom:30px;height:10px;background:linear-gradient(90deg,transparent,var(--red),var(--blue),transparent);filter:blur(1px);opacity:.62}
-@keyframes floatA{to{transform:translateY(-13px) rotate(-1deg)}}@keyframes floatB{to{transform:translateY(14px) rotate(1deg)}}
-.browser{width:min(760px,90vw);height:min(500px,58vh);border-radius:26px;overflow:hidden;background:#050506;border:1px solid rgba(255,255,255,.15);box-shadow:0 34px 120px rgba(0,0,0,.55),0 0 70px rgba(73,231,255,.14);transform:rotateY(-6deg) rotateX(3deg);animation:browserFloat 5.5s ease-in-out infinite alternate}
-@keyframes browserFloat{to{transform:rotateY(5deg) rotateX(0deg) translateY(-12px)}}
-.browser-top{height:44px;display:flex;align-items:center;gap:8px;padding:0 14px;background:rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.1)}
-.browser-top span{width:11px;height:11px;border-radius:50%;background:rgba(255,255,255,.42)}.browser-top b{margin-left:8px;color:rgba(255,255,255,.58);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.browser iframe{width:100%;height:calc(100% - 44px);border:0;background:#111}
-.board-layout{width:min(620px,86vw);display:grid;grid-template-columns:1.2fr 1fr;gap:16px;transform:rotateX(5deg)}
-.board-panel{min-height:130px;border-radius:28px;background:rgba(255,255,255,.075);border:1px solid rgba(255,255,255,.13);box-shadow:0 24px 80px rgba(0,0,0,.36);display:grid;place-items:center;text-align:center;font-size:24px;font-weight:900;line-height:1.12;padding:20px;animation:tileBob 4s ease-in-out infinite alternate}
-.board-panel.big{grid-row:span 2;font-size:72px;background:linear-gradient(135deg,rgba(255,31,69,.25),rgba(73,231,255,.10));letter-spacing:-.08em}
-.board-panel.qr img{width:120px;height:120px;border-radius:14px}
-.board-panel:nth-child(2){animation-delay:.2s}.board-panel:nth-child(3){animation-delay:.4s}.board-panel:nth-child(4){animation-delay:.6s}
-@keyframes tileBob{to{transform:translateY(-9px)}}
-.filmstrip{position:relative;width:min(720px,90vw);display:grid;grid-template-columns:repeat(4,1fr);gap:12px;background:#060606;border-radius:26px;padding:34px 18px;box-shadow:0 28px 110px rgba(0,0,0,.55);overflow:hidden;transform:rotate(-2deg)}
-.filmstrip>span{position:absolute;left:0;right:0;height:16px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.32) 0 14px,transparent 14px 30px)}
-.filmstrip>span:nth-child(1){top:8px}.filmstrip>span:nth-child(2){bottom:8px}.film-frame{min-height:220px;border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,.11),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.12);display:grid;place-items:end center;text-align:center;padding:18px;color:rgba(255,255,255,.72);font-weight:900;text-transform:uppercase;letter-spacing:.12em;font-size:12px;animation:frameGlow 5s ease-in-out infinite alternate}
-@keyframes frameGlow{to{filter:brightness(1.3);transform:translateY(-7px)}}
-.hallway-loop{position:relative;width:min(720px,90vw);height:470px;display:grid;place-items:center;background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));clip-path:polygon(17% 0,83% 0,100% 100%,0 100%);box-shadow:0 0 120px rgba(255,31,69,.08) inset}
-.door{position:absolute;width:110px;height:210px;background:linear-gradient(180deg,#15151d,#030304);border:1px solid rgba(255,255,255,.18);display:grid;place-items:center;color:var(--red);font-size:42px;font-weight:950;box-shadow:0 0 55px rgba(255,31,69,.18)}
-.d1{left:18%;top:20%;transform:scale(.74)}.d2{left:43%;top:15%;transform:scale(.9)}.d3{right:14%;top:20%;transform:scale(.74)}
-.steps{position:absolute;bottom:26px;display:flex;gap:22px}.steps i{width:38px;height:12px;border-radius:50%;background:rgba(255,255,255,.25);animation:stepBlink 1.4s ease-in-out infinite}.steps i:nth-child(2){animation-delay:.15s}.steps i:nth-child(3){animation-delay:.3s}.steps i:nth-child(4){animation-delay:.45s}.steps i:nth-child(5){animation-delay:.6s}
-@keyframes stepBlink{50%{background:var(--red);box-shadow:0 0 25px rgba(255,31,69,.65)}}
-.music-rise{position:relative;width:min(660px,86vw);height:480px;display:grid;place-items:center}
-.wave{position:absolute;border-radius:50%;border:1px solid rgba(255,255,255,.12);animation:wave 3.4s ease-in-out infinite}
-.w1{width:32%;height:32%;border-color:rgba(73,231,255,.32)}.w2{width:56%;height:56%;animation-delay:.4s;border-color:rgba(255,31,69,.22)}.w3{width:82%;height:82%;animation-delay:.8s;border-style:dashed}
-@keyframes wave{50%{transform:scale(1.08);opacity:.6}}
-.silhouette{width:105px;height:230px;border-radius:60px 60px 35px 35px;background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(73,231,255,.32),rgba(0,0,0,.8));box-shadow:0 0 65px rgba(73,231,255,.28);animation:risePerson 5s ease-in-out infinite alternate}
-@keyframes risePerson{to{transform:translateY(-18px) scale(1.04);filter:hue-rotate(24deg)}}
-.bars{position:absolute;bottom:38px;display:flex;align-items:end;gap:10px}.bars i{width:14px;height:40px;border-radius:999px;background:linear-gradient(180deg,var(--blue),var(--pink));animation:bars 1.2s ease-in-out infinite}.bars i:nth-child(2){height:70px;animation-delay:.1s}.bars i:nth-child(3){height:95px;animation-delay:.2s}.bars i:nth-child(4){height:130px;animation-delay:.3s}.bars i:nth-child(5){height:95px;animation-delay:.4s}.bars i:nth-child(6){height:70px;animation-delay:.5s}
-@keyframes bars{50%{transform:scaleY(.45);opacity:.62}}
-.take-visual{position:relative;width:min(660px,88vw);height:430px;display:grid;place-items:center}
-.clapper{position:absolute;width:210px;height:150px;border-radius:22px;background:linear-gradient(180deg,#fff,#bcbcbc);color:#050505;font-size:32px;font-weight:950;display:grid;place-items:center;text-align:center;line-height:.95;box-shadow:0 30px 90px rgba(0,0,0,.4);transform:rotate(-7deg) translateX(-160px);animation:clapA 4.8s ease-in-out infinite alternate}
-.clapper b{font-size:52px}.clapper.glitch{transform:rotate(6deg);background:linear-gradient(180deg,var(--red),#1b0006);color:white;animation:clapB 4.4s ease-in-out infinite alternate}.clapper.final{transform:rotate(2deg) translateX(165px);background:linear-gradient(180deg,var(--blue),var(--pink));animation:clapC 5.2s ease-in-out infinite alternate}
-@keyframes clapA{to{transform:rotate(-4deg) translateX(-170px) translateY(-12px)}}@keyframes clapB{to{transform:rotate(-2deg) translateY(16px)}}@keyframes clapC{to{transform:rotate(5deg) translateX(170px) translateY(-10px)}}
-.task-orbit{position:relative;width:min(560px,80vw);aspect-ratio:1;border-radius:50%;border:1px dashed rgba(255,255,255,.16);animation:spin 24s linear infinite}
-.task-orbit div{position:absolute;width:128px;height:128px;border-radius:50%;display:grid;place-items:center;text-align:center;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);font-size:13px;font-weight:950;letter-spacing:.08em;box-shadow:0 20px 70px rgba(0,0,0,.35);animation:spin 24s linear infinite reverse}
-.task-orbit div:nth-child(1){left:50%;top:-64px;transform:translateX(-50%)}.task-orbit div:nth-child(2){right:-42px;top:24%}.task-orbit div:nth-child(3){right:10%;bottom:-28px}.task-orbit div:nth-child(4){left:10%;bottom:-28px}.task-orbit div:nth-child(5){left:-42px;top:24%}
-.final-signal{position:relative;width:min(480px,72vw);aspect-ratio:1;display:grid;place-items:center}
-.final-signal img{width:42%;height:42%;object-fit:contain;z-index:4;filter:drop-shadow(0 0 35px rgba(73,231,255,.48))}
-.signal-ring{position:absolute;inset:0;border-radius:50%;border:1px solid rgba(255,255,255,.18);animation:signal 2.4s ease-out infinite}.signal-ring.r2{animation-delay:1.2s}
-@keyframes signal{0%{transform:scale(.3);opacity:1}100%{transform:scale(1.2);opacity:0}}
-.help{position:absolute;right:30px;bottom:34px;z-index:24;color:rgba(255,255,255,.42);font-size:12px;font-weight:800;letter-spacing:.08em}
-@media(max-width:900px){.slide{grid-template-columns:1fr;padding:92px 54px 70px;gap:10px;overflow:auto}.slide-visual{min-height:360px}h1{font-size:clamp(54px,14vw,110px)}.card-cloud,.radar-grid{grid-template-columns:1fr}.topbar{left:14px;right:14px;top:12px}.nav-arrow{display:none}.help{display:none}.browser{height:410px}}
-@media(max-width:560px){.slide{padding:86px 24px 64px}li,.mini-card{font-size:17px}.controls{gap:5px}.ctrl{padding:0 10px;font-size:11px}.counter{display:none}.dots{bottom:14px}}
-</style>
-</head>
-<body>
-<div id="deck">
-  <canvas id="starfield"></canvas>
-  <div class="vignette"></div>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#10100f"><meta name="description" content="Sinclair Film Studios. Make films, find your creative role, meet the crew, and join our studio."><title>Sinclair Film Studios — Your scene is next.</title><link rel="icon" href="assets/sfs-logo.webp"><link rel="stylesheet" href="styles.css"><script src="app.js" defer></script></head><body><div id="sfs2026" style="--sfs-logo-url: url('assets/sfs-logo.webp');">
+  
+  
+  
+  
+  
+  <div class="sfs-progress" id="sfsProgress" aria-hidden="true"></div>
 
-  <div class="sound-gate" id="soundGate">
-    <div class="gate-card">
-      <img src="assets/sfs-logo.webp" alt="SFS logo">
-      <h2>SFS Deck</h2>
-      <p>Fullscreen it. Use arrow keys. Tap once to unlock sound and start the presentation.</p>
-      <button id="startShow">Start with sound</button>
+  <a class="skip-link" href="#hero">Skip to content</a><nav class="sfs-nav" aria-label="Sinclair Film Studios navigation">
+    <a class="sfs-mark" href="#hero" aria-label="Go to top">
+      <img class="sfs-logo-mark" src="assets/sfs-logo.webp" alt="SFS logo">
+      <span>SFS<small>SINCLAIR FILM STUDIOS</small></span>
+    </a>
+    <button class="menu-toggle" aria-expanded="false" aria-controls="navigation">Menu +</button><div class="sfs-navlinks" id="navigation">
+      <div class="sfs-nav-main">
+        <a href="#about">About</a>
+        <a href="#roles">Roles</a>
+        <a href="#process">Process</a>
+        <a href="#join">Join</a>
+      </div>
+      <div class="sfs-nav-special">
+        <a class="sfs-special-link" href="#role-finder" data-route="finder">Find Your Role</a>
+        <a class="sfs-special-link sfs-crew-special" href="#crew-page" data-route="crew">Crew</a>
+        <button class="sfs-sound-toggle" id="sfsSoundToggle" type="button">Sound Off</button><button id="motionToggle" type="button" aria-pressed="false">Pause motion</button>
+      </div>
     </div>
-  </div>
+  </nav>
 
-  <div class="topbar">
-    <div class="brand"><img src="assets/sfs-logo.webp" alt="SFS logo"><span>SFS Presentation</span></div>
-    <div class="controls">
-      <button class="ctrl" id="soundBtn">Sound Off</button>
-      <button class="ctrl" id="fullBtn">Fullscreen</button>
-      <span class="counter" id="counter">01 / 12</span>
-    </div>
-  </div>
+  <main id="sfsHomePage" class="sfs-site-page active-page">
+    <section class="sfs-panel sfs-hero" id="hero"><div class="hero-art" aria-hidden="true"></div><div class="frame-label"><span><i></i> IN PRODUCTION / SINCLAIR</span><span>EST. FOR THE NEXT GENERATION</span></div>
+      <div class="sfs-hero-copy reveal">
+        <p class="eyebrow">Independent minds. Collective cinema.</p>
+        <h1>
+          Make school<br>feel like a
+          <span class="gradient-word" id="rotatingWord">movie.</span>
+        </h1>
+        <p class="hero-sub">
+          A cinematic club for actors, writers, editors, camera crew, designers, and anyone ready to help create something that looks real.
+        </p>
+        <div class="hero-actions">
+          <a class="sfs-button magnetic" href="#join">Join the Scene <span>↗</span></a>
+          <a class="sfs-button ghost magnetic" href="#roles">Explore Roles</a>
+          <a class="sfs-button ghost magnetic finder-cta" href="#role-finder" data-route="finder">Find your role ↗</a>
+          <a class="sfs-button ghost magnetic" href="#crew-page" data-route="crew">Meet the crew ↗</a>
+        </div>
+      </div>
 
-  <button class="nav-arrow" id="prev" aria-label="Previous slide">‹</button>
-  <button class="nav-arrow" id="next" aria-label="Next slide">›</button>
+      
+    </section>
+
+    <div class="reel-strip" aria-label="Studio departments"><span>ACT</span><b>✳</b><span>WRITE</span><b>✳</b><span>FILM</span><b>✳</b><span>EDIT</span><b>✳</b><span>CREATE</span><b>✳</b></div><section class="sfs-panel story-panel" id="about">
+      <div class="sticky-word reveal">
+        <p class="eyebrow">What we are</p>
+        <h2>Not a meeting. A studio.</h2>
+      </div>
+      <div class="story-stack">
+        <article class="story-card reveal tilt">
+          <span>01</span>
+          <h3>We build films from nothing.</h3>
+          <p>Ideas become scripts. Scripts become shots. Shots become edits. Edits become something people remember.</p>
+        </article>
+        <article class="story-card reveal tilt">
+          <span>02</span>
+          <h3>Every person has a job.</h3>
+          <p>You can act, write, film, edit, design posters, manage props, handle sound, or help run production.</p>
+        </article>
+        <article class="story-card reveal tilt">
+          <span>03</span>
+          <h3>We want it to look cinematic.</h3>
+          <p>Dark lighting, smooth camera movement, strong music, clean titles, powerful performances, and real planning.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="sfs-panel roles-panel" id="roles">
+      <div class="center reveal">
+        <p class="eyebrow">Choose your role</p>
+        <h2>There is a place for you on set.</h2>
+        <p class="section-sub">Tap a department. The studio board changes live.</p>
+      </div>
+
+      <div class="role-lab reveal"><div class="department-art" aria-hidden="true"><span>DEPARTMENT / <b id="deptNumber">01</b></span><strong id="deptWord">ACT.</strong><small>YOUR PLACE IN THE PICTURE</small></div>
+        
+
+        <div class="role-console">
+          <div class="role-tabs" role="group" aria-label="Club role selector">
+            <button class="active magnetic" data-role="actor">Actor</button>
+            <button class="magnetic" data-role="writer">Writer</button>
+            <button class="magnetic" data-role="camera">Camera</button>
+            <button class="magnetic" data-role="editor">Editor</button>
+            <button class="magnetic" data-role="design">Design</button>
+            <button class="magnetic" data-role="crew">Crew</button>
+          </div>
+          <div class="role-output" id="roleOutput" aria-live="polite">
+            <p class="mini">Now showing</p>
+            <h3>Actor</h3>
+            <p>Perform in short films, trailers, emotional scenes, thrillers, comedy scenes, and cinematic projects. No experience needed, just commitment.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sfs-panel process-panel" id="process">
+      <div class="center reveal">
+        <p class="eyebrow">How a film becomes real</p>
+        <h2>From idea to premiere.</h2>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-line" aria-hidden="true"></div>
+        <article class="step reveal">
+          <b>01</b>
+          <h3>Concept</h3>
+          <p>We pitch the idea, mood, genre, characters, and message.</p>
+        </article>
+        <article class="step reveal">
+          <b>02</b>
+          <h3>Script</h3>
+          <p>Writers and directors turn the concept into scenes, dialogue, and shot needs.</p>
+        </article>
+        <article class="step reveal">
+          <b>03</b>
+          <h3>Production</h3>
+          <p>Actors, camera crew, sound, stage hands, and producers make the footage happen.</p>
+        </article>
+        <article class="step reveal">
+          <b>04</b>
+          <h3>Edit</h3>
+          <p>Editors shape the rhythm, sound, titles, colour, pacing, and final feeling.</p>
+        </article>
+        <article class="step reveal">
+          <b>05</b>
+          <h3>Release</h3>
+          <p>Posters, trailers, announcements, screenings, and promotion bring the film to people.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="sfs-panel showcase-panel">
+      <div class="showcase-grid">
+        <div class="showcase-copy reveal">
+          <p class="eyebrow">What we make</p>
+          <h2>Short films. Trailers. Promos. Behind the scenes.</h2>
+          <p>We are building a creative club that can make videos for stories, events, announcements, competitions, and school culture.</p>
+        </div>
+        <div class="floating-scenes">
+          <div class="scene-card scene-a tilt reveal">
+            
+            <h3>Short Films</h3>
+            <p>Thriller, drama, comedy, mystery, horror, and original stories.</p>
+          </div>
+          <div class="scene-card scene-b tilt reveal">
+            
+            <h3>Sound + Music</h3>
+            <p>Voice, atmosphere, sound design, and clean final audio.</p>
+          </div>
+          <div class="scene-card scene-c tilt reveal">
+            
+            <h3>Visual Style</h3>
+            <p>Lighting, framing, posters, title cards, and polished edits.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sfs-panel actors-panel">
+      <div class="actors-card reveal">
+        <p class="eyebrow">Actors wanted</p>
+        <h2>We need people brave enough to be on camera.</h2>
+        <p>
+          You do not have to be perfect. You do not have to be famous. You just need to show up, try the scene, and bring the character to life.
+        </p>
+        
+      </div>
+    </section>
+
+    <section class="sfs-panel join-panel" id="join">
+      <div class="final-card reveal">
+        <p class="eyebrow">Join Sinclair Film Studios</p>
+        <h2>Stop watching from the outside.</h2>
+        <h1>Step into the scene.</h1>
+        <div class="join-grid">
+          <div>
+            <span>Main meetings</span>
+            <b>Every Friday after school</b>
+          </div>
+          <div>
+            <span>Extra sessions</span>
+            <b>Some Mondays and Wednesdays</b>
+          </div>
+          <div>
+            <span>Best for</span>
+            <b>Actors, editors, writers, crew, designers</b>
+          </div>
+        </div>
+        <div class="classroom-invite"><div><p class="eyebrow">Your next scene starts here</p><h3>You're on the call sheet.</h3><p>Join our Google Classroom for Sinclair Film Studios.</p><a class="sfs-button" href="https://classroom.google.com/c/ODQ2OTIzODA3MjM0?cjc=sgvedclk" target="_blank" rel="noopener noreferrer">Join Google Classroom ↗</a><div class="invite-code">Class code <strong>sgvedclk</strong><button id="copyInvite" type="button">Copy invite</button></div><p id="copyStatus" role="status"></p></div><a href="https://classroom.google.com/c/ODQ2OTIzODA3MjM0?cjc=sgvedclk" target="_blank" rel="noopener noreferrer" class="qr-link"><img src="assets/classroom-qr.png" width="216" height="216" alt="QR code to join Sinclair Film Studios Google Classroom"><span>SCAN TO JOIN ↗</span></a></div><p class="final-line">The next film only happens when someone decides to show up.</p>
+      </div>
+    </section>
+  </main>
 
   
-    <section class="slide slide-1 type-title active" data-title="SFS">
-      <div class="slide-bg"><div class="grid"></div><div class="fog f1"></div><div class="fog f2"></div></div>
-      <div class="slide-copy">
-        <p class="kicker">SFS / INTERNAL</p>
-        <h1>SFS</h1>
-        <p class="subtitle">Leadership deck</p>
-        <div class="content"><ul><li>No filler</li><li>Lock the club fair plan</li><li>Pick what we film next</li></ul></div>
-      </div>
-      <div class="slide-visual">
-        <div class="title-machine">
-          <div class="lens l1"></div><div class="lens l2"></div><div class="lens l3"></div>
-          <img src="assets/sfs-logo.webp" alt="SFS logo">
-          <div class="curtain curtain-left"></div><div class="curtain curtain-right"></div>
-        </div></div>
-    </section>
-    
-    <section class="slide slide-2 type-cards" data-title="What we actually need to decide">
-      <div class="slide-bg"><div class="grid"></div><div class="fog f1"></div><div class="fog f2"></div></div>
-      <div class="slide-copy">
-        <p class="kicker">TODAY</p>
-        <h1>What we actually need to decide</h1>
-        
-        <div class="content"><div class='mini-card'><span>01</span><p>How the club fair table looks</p></div><div class='mini-card'><span>02</span><p>What people see first on the iPad</p></div><div class='mini-card'><span>03</span><p>Which video idea we push after the first production</p></div><div class='mini-card'><span>04</span><p>What each person finishes this week</p></div></div>
-      </div>
-      <div class="slide-visual"><div class='card-cloud'><div class='mini-card'><span>01</span><p>How the club fair table looks</p></div><div class='mini-card'><span>02</span><p>What people see first on the iPad</p></div><div class='mini-card'><span>03</span><p>Which video idea we push after the first production</p></div><div class='mini-card'><span>04</span><p>What each person finishes this week</p></div></div></div>
-    </section>
-    
-    <section class="slide slide-3 type-radar" data-title="Already built">
-      <div class="slide-bg"><div class="grid"></div><div class="fog f1"></div><div class="fog f2"></div></div>
-      <div class="slide-copy">
-        <p class="kicker">STATUS</p>
-        <h1>Already built</h1>
-        
-        <div class="content"><div class='radar-grid'><div class='mini-card'><span>01</span><p>Website is live</p></div><div class='mini-card'><span>02</span><p>Role finder works</p></div><div class='mini-card'><span>03</span><p>Crew page works</p></div><div class='mini-card'><span>04</span><p>First short film is ready to plan</p></div><div class='mini-card'><span>05</span><p>Club fair board idea is started</p></div></div></div>
-      </div>
-      <div class="slide-visual"><div class='card-cloud'><div class='mini-card'><span>01</span><p>Website is live</p></div><div class='mini-card'><span>02</span><p>Role finder works</p></div><div class='mini-card'><span>03</span><p>Crew page works</p></div><div class='mini-card'><span>04</span><p>First short film is ready to plan</p></div><div class='mini-card'><span>05</span><p>Club fair board idea is started</p></div></div></div>
-    </section>
-    
-    <section class="slide slide-4 type-booth" data-title="The table should feel like a mini theatre">
-      <div class="slide-bg"><div class="grid"></div><div class="fog f1"></div><div class="fog f2"></div></div>
-      <div class="slide-copy">
-        <p class="kicker">CLUB FAIR</p>
-        <h1>The table should feel like a mini theatre</h1>
-        
-        <div class="content"><ul><li>Red curtain board with iPad in the middle</li><li>Info board on the right</li><li>QR code in front</li><li>People interact instead of just reading</li></ul></div>
-      </div>
-      <div class="slide-visual">
-        <div class="booth-visual">
-          <div class="curtain-board"><div class="ipad-hole">iPad<br><small>website</small></div></div>
-          <div class="info-board"><b>INFO BOARD</b><span>meeting time</span><span>roles</span><span>projects</span><span>join QR</span></div>
-          <div class="table-line"></div>
-        </div></div>
-    </section>
-    
-    <section class="slide slide-5 type-website" data-title="The iPad is the hook">
-      <div class="slide-bg"><div class="grid"></div><div class="fog f1"></div><div class="fog f2"></div></div>
-      <div class="slide-copy">
-        <p class="kicker">WEBSITE</p>
-        <h1>The iPad is the hook</h1>
-        
-        <div class="content"><ul><li>Open the website full screen</li><li>Let people try Find Your Role</li><li>Crew page makes it feel real</li><li>QR sends them to join</li></ul></div>
-      </div>
-      <div class="slide-visual">
-        <div class="browser">
-          <div class="browser-top"><span></span><span></span><span></span><b>https://mastermindude2.github.io/sfs-web/</b></div>
-          <iframe src="https://mastermindude2.github.io/sfs-web/" title="SFS website preview"></iframe>
-        </div></div>
-    </section>
-    
-    <section class="slide slide-6 type-board" data-title="What goes on the info board">
-      <div class="slide-bg"><div class="grid"></div><div class="fog f1"></div><div class="fog f2"></div></div>
-      <div class="slide-copy">
-        <p class="kicker">BOARD</p>
-        <h1>What goes on the info board</h1>
-        
-        <div class="content"><ul><li>Meeting time</li><li>What we make</li><li>How to join</li><li>Roles people can try</li><li>QR code</li></ul></div>
-      </div>
-      <div class="slide-visual">
-        <div class="board-layout">
-          <div class="board-panel big">SFS</div>
-          <div class="board-panel">Meeting<br>Friday after school</div>
-          <div class="board-panel">Acting<br>Camera<br>Editing</div>
-          <div class="board-panel qr"><img src="assets/sfs-website-qr.png" alt="Website QR code"></div>
-        </div></div>
-    </section>
-    
-    <section class="slide slide-7 type-film" data-title="Do Not Wait to Care">
-      <div class="slide-bg"><div class="grid"></div><div class="fog f1"></div><div class="fog f2"></div></div>
-      <div class="slide-copy">
-        <p class="kicker">FIRST PRODUCTION</p>
-        <h1>Do Not Wait to Care</h1>
-        
-        <div class="content"><ul><li>Emotional, simple, clean</li><li>Uses school locations</li><li>Music carries the story</li><li>Good first project for new actors</li></ul></div>
-      </div>
-      <div class="slide-visual">
-        <div class="filmstrip">
-          <span></span><span></span><span></span><span></span>
-          <div class="film-frame">quiet piano</div>
-          <div class="film-frame">missed moment</div>
-          <div class="film-frame">turning back</div>
-          <div class="film-frame">small action</div>
-        </div></div>
-    </section>
-    
-    <section class="slide slide-8 type-thriller" data-title="The 47 Steps">
-      <div class="slide-bg"><div class="grid"></div><div class="fog f1"></div><div class="fog f2"></div></div>
-      <div class="slide-copy">
-        <p class="kicker">IDEA 01</p>
-        <h1>The 47 Steps</h1>
-        
-        <div class="content"><ul><li>Psychological hallway loop</li><li>Same walk keeps restarting</li><li>Main character slowly breaks pattern</li><li>Strong acting + tense visuals</li></ul></div>
-      </div>
-      <div class="slide-visual">
-        <div class="hallway-loop">
-          <div class="door d1">47</div><div class="door d2">47</div><div class="door d3">47</div>
-          <div class="steps"><i></i><i></i><i></i><i></i><i></i></div>
-        </div></div>
-    </section>
-    
-    <section class="slide slide-9 type-wave" data-title="The Rise">
-      <div class="slide-bg"><div class="grid"></div><div class="fog f1"></div><div class="fog f2"></div></div>
-      <div class="slide-copy">
-        <p class="kicker">IDEA 02</p>
-        <h1>The Rise</h1>
-        
-        <div class="content"><ul><li>Music slowly gets bigger</li><li>Character changes through movement and shots</li><li>No dialogue needed</li><li>Starts quiet, ends powerful</li></ul></div>
-      </div>
-      <div class="slide-visual">
-        <div class="music-rise">
-          <div class="wave w1"></div><div class="wave w2"></div><div class="wave w3"></div>
-          <div class="silhouette"></div>
-          <div class="bars"><i></i><i></i><i></i><i></i><i></i><i></i></div>
-        </div></div>
-    </section>
-    
-    <section class="slide slide-10 type-takes" data-title="The Last Take">
-      <div class="slide-bg"><div class="grid"></div><div class="fog f1"></div><div class="fog f2"></div></div>
-      <div class="slide-copy">
-        <p class="kicker">IDEA 03</p>
-        <h1>The Last Take</h1>
-        
-        <div class="content"><ul><li>One final scene keeps going wrong</li><li>Each retake changes something</li><li>Funny at first, serious by the end</li><li>Easy to film, memorable idea</li></ul></div>
-      </div>
-      <div class="slide-visual">
-        <div class="take-visual">
-          <div class="clapper">TAKE<br><b>01</b></div>
-          <div class="clapper glitch">TAKE<br><b>02</b></div>
-          <div class="clapper final">LAST<br><b>TAKE</b></div>
-        </div></div>
-    </section>
-    
-    <section class="slide slide-11 type-tasks" data-title="Jobs that actually matter">
-      <div class="slide-bg"><div class="grid"></div><div class="fog f1"></div><div class="fog f2"></div></div>
-      <div class="slide-copy">
-        <p class="kicker">THIS WEEK</p>
-        <h1>Jobs that actually matter</h1>
-        
-        <div class="content"><ul><li>Finish the board layout</li><li>Test website on the iPad</li><li>Make the QR + sign-up flow</li><li>Build first-film shot list</li><li>Start actor recruitment</li></ul></div>
-      </div>
-      <div class="slide-visual">
-        <div class="task-orbit"><div>BOARD</div><div>iPAD</div><div>QR</div><div>SHOT LIST</div><div>ACTORS</div></div></div>
-    </section>
-    
-    <section class="slide slide-12 type-final" data-title="Make it feel real.">
-      <div class="slide-bg"><div class="grid"></div><div class="fog f1"></div><div class="fog f2"></div></div>
-      <div class="slide-copy">
-        <p class="kicker">FINAL</p>
-        <h1>Make it feel real.</h1>
-        
-        <div class="content"><ul><li>Launch the display</li><li>Get people to interact</li><li>Start filming</li></ul></div>
-      </div>
-      <div class="slide-visual">
-        <div class="final-signal"><img src="assets/sfs-logo.webp" alt="SFS logo"><div class="signal-ring"></div><div class="signal-ring r2"></div></div></div>
-    </section>
+  <section id="sfsFinderPage" class="sfs-finder-page hidden-page" aria-live="polite">
+    <div class="finder-top">
+      <a class="sfs-button ghost magnetic back-home" href="#hero" data-route="home">← Back to Home</a>
+      <span>Interactive SFS Role Scan</span>
+    </div>
+
     
 
-  <div class="dots"><button class='dot active' data-go='0' aria-label='Go to slide 1'></button><button class='dot ' data-go='1' aria-label='Go to slide 2'></button><button class='dot ' data-go='2' aria-label='Go to slide 3'></button><button class='dot ' data-go='3' aria-label='Go to slide 4'></button><button class='dot ' data-go='4' aria-label='Go to slide 5'></button><button class='dot ' data-go='5' aria-label='Go to slide 6'></button><button class='dot ' data-go='6' aria-label='Go to slide 7'></button><button class='dot ' data-go='7' aria-label='Go to slide 8'></button><button class='dot ' data-go='8' aria-label='Go to slide 9'></button><button class='dot ' data-go='9' aria-label='Go to slide 10'></button><button class='dot ' data-go='10' aria-label='Go to slide 11'></button><button class='dot ' data-go='11' aria-label='Go to slide 12'></button></div>
-  <div class="help">← → / SPACE / CLICK</div>
-  <div class="progress"><div id="progressFill"></div></div>
+    <div class="finder-stage">
+      <div class="finder-intro active" id="finderIntro">
+        <p class="eyebrow">Find out who you are</p>
+        <h2>Run the studio scan.</h2>
+        <p>
+          Answer 10 quick tap questions. The scanner reads your creative instincts
+          and locks onto the SFS role that fits you best.
+        </p>
+        <button class="sfs-button magnetic finder-start" id="startFinder">Start the Scan</button>
+        <p class="finder-note">Built for the club fair. Fast, simple, dramatic, and iPad friendly. An interest quiz, not an AI assessment. Answers stay on this page.</p>
+      </div>
+
+      <div class="finder-quiz" id="finderQuiz">
+        <div class="quiz-header">
+          <span id="finderCount">Question 1 / 10</span>
+          <span id="finderMode">Signal calibration</span>
+        </div>
+
+        <div class="finder-progress" role="progressbar" aria-label="Quiz progress" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0">
+          <div id="finderProgress"></div>
+        </div>
+
+        <div class="finder-card" id="finderCard">
+          <div class="finder-card-glow"></div>
+          <h3 id="finderQuestion" tabindex="-1">Question text</h3>
+          <div class="finder-options" id="finderOptions"></div>
+        </div>
+
+        <button class="finder-back" id="finderBack">Back</button>
+      </div>
+
+      <div class="finder-result" id="finderResult">
+        <div class="scan-cutscene" id="scanCutscene" role="status">
+          <div class="scan-cinema">
+            
+            <div class="scan-copy">
+              <p class="eyebrow">Role lock sequence</p>
+              <h2 id="scanPhaseTitle">Initializing creative scan</h2>
+              <p id="scanPhaseText">Collecting your choices and loading your cinematic profile.</p>
+              <div class="scan-meter"><div id="scanMeterFill"></div></div>
+              <div class="scan-roles-strip" id="scanRolesStrip"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="result-glass" id="resultGlass">
+          <p class="eyebrow">Your SFS match is</p>
+          <h2 id="resultRole" tabindex="-1">Actor</h2>
+          <p id="resultDesc"></p>
+          <div class="result-bars" id="resultBars"></div>
+
+          <div class="result-actions"><a class="sfs-button" href="https://classroom.google.com/c/ODQ2OTIzODA3MjM0?cjc=sgvedclk" target="_blank" rel="noopener noreferrer">Join the studio ↗</a>
+            <button class="sfs-button magnetic" id="tryAgain">Try Again</button>
+            <a class="sfs-button ghost magnetic" href="#hero" data-route="home">Back to Home</a>
+          </div>
+
+          <p class="result-tagline" id="resultTagline"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <section id="sfsCrewPage" class="sfs-crew-page hidden-page" aria-live="polite">
+    <div class="crew-top">
+      <a class="sfs-button ghost magnetic crew-home" href="#hero" data-route="home">← Back to Home</a>
+      <span>Main Crew Showcase</span>
+    </div>
+
+    <section class="crew-hero">
+      <div class="crew-hero-copy reveal">
+        <p class="eyebrow">Sinclair Film Studios</p>
+        <h1>Meet the main crew.</h1>
+        <p>
+          The people behind the scenes, in front of the camera, and leading the vision.
+          Built like a film studio. Moving like a production team.
+        </p>
+        <div class="crew-actions">
+          <button class="sfs-button magnetic" type="button" id="crewPauseBtn">Pause Orbit</button>
+          <a class="sfs-button ghost magnetic" href="#crewSpotlight">Lock Onto Crew</a>
+        </div>
+      </div>
+
+      <div class="crew-orbit-area reveal" aria-label="Animated galactic crew orbit">
+        
+
+        <div class="crew-orbit-track" id="crewOrbitTrack">
+          
+          <button class="crew-portrait-button" type="button" data-crew-select="0" aria-label="Show Kaves">
+            <img src="assets/kaves.webp" alt="Kaves portrait">
+            <span class="crew-name">Kaves</span>
+            <span class="crew-role">Crew</span>
+          </button>
+        
+          <button class="crew-portrait-button" type="button" data-crew-select="1" aria-label="Show Hudson">
+            <img src="assets/hudson.webp" alt="Hudson portrait">
+            <span class="crew-name">Hudson</span>
+            <span class="crew-role">Head Actor</span>
+          </button>
+        
+          <button class="crew-portrait-button" type="button" data-crew-select="2" aria-label="Show Manish">
+            <img src="assets/manish.webp" alt="Manish portrait">
+            <span class="crew-name">Manish</span>
+            <span class="crew-role">Head Cameraman</span>
+          </button>
+        
+          <button class="crew-portrait-button" type="button" data-crew-select="3" aria-label="Show Zohaib">
+            <img src="assets/zohaib.webp" alt="Zohaib portrait">
+            <span class="crew-name">Zohaib</span>
+            <span class="crew-role">Manager</span>
+          </button>
+        
+          <button class="crew-portrait-button" type="button" data-crew-select="4" aria-label="Show Saksham">
+            <img src="assets/saksham.webp" alt="Saksham portrait">
+            <span class="crew-name">Saksham</span>
+            <span class="crew-role">Director</span>
+          </button>
+        
+        </div>
+
+        <div class="crew-orbit-note">Galactic orbit. Tap a portrait or pause the motion.</div>
+      </div>
+    </section>
+
+    <section class="crew-spotlight" id="crewSpotlight">
+      <div class="crew-spotlight-wrap">
+        
+          <article class="crew-spot-card" data-crew-card="0">
+            <div class="crew-portrait-stage">
+              <img src="assets/kaves.webp" alt="Kaves portrait">
+              <div class="crew-portrait-halo"></div>
+            </div>
+            <div class="crew-spot-copy">
+              <p class="crew-micro">SET SUPPORT</p>
+              <h2>Kaves</h2>
+              <h3>Crew</h3>
+              <p>Helps with setup, props, movement, and whatever the production needs in the moment.</p>
+              <blockquote>The set moves because the crew moves first.</blockquote>
+            </div>
+          </article>
+        
+          <article class="crew-spot-card" data-crew-card="1">
+            <div class="crew-portrait-stage">
+              <img src="assets/hudson.webp" alt="Hudson portrait">
+              <div class="crew-portrait-halo"></div>
+            </div>
+            <div class="crew-spot-copy">
+              <p class="crew-micro">PERFORMANCE</p>
+              <h2>Hudson</h2>
+              <h3>Head Actor</h3>
+              <p>Leads performance energy and brings scenes to life on screen.</p>
+              <blockquote>The camera watches. The actor makes it matter.</blockquote>
+            </div>
+          </article>
+        
+          <article class="crew-spot-card" data-crew-card="2">
+            <div class="crew-portrait-stage">
+              <img src="assets/manish.webp" alt="Manish portrait">
+              <div class="crew-portrait-halo"></div>
+            </div>
+            <div class="crew-spot-copy">
+              <p class="crew-micro">VISUALS</p>
+              <h2>Manish</h2>
+              <h3>Head Cameraman</h3>
+              <p>Leads camera work, framing, movement, and the cinematic look of SFS.</p>
+              <blockquote>A normal hallway becomes cinema through the frame.</blockquote>
+            </div>
+          </article>
+        
+          <article class="crew-spot-card" data-crew-card="3">
+            <div class="crew-portrait-stage">
+              <img src="assets/zohaib.webp" alt="Zohaib portrait">
+              <div class="crew-portrait-halo"></div>
+            </div>
+            <div class="crew-spot-copy">
+              <p class="crew-micro">CONTROL</p>
+              <h2>Zohaib</h2>
+              <h3>Manager</h3>
+              <p>Helps organize people, ideas, timing, and production flow so the club stays moving.</p>
+              <blockquote>Every good production needs someone keeping the chaos in line.</blockquote>
+            </div>
+          </article>
+        
+          <article class="crew-spot-card" data-crew-card="4">
+            <div class="crew-portrait-stage">
+              <img src="assets/saksham.webp" alt="Saksham portrait">
+              <div class="crew-portrait-halo"></div>
+            </div>
+            <div class="crew-spot-copy">
+              <p class="crew-micro">VISION</p>
+              <h2>Saksham</h2>
+              <h3>Director</h3>
+              <p>Leads the creative direction of Sinclair Film Studios and pushes each production forward.</p>
+              <blockquote>The vision starts here.</blockquote>
+            </div>
+          </article>
+        
+        <div class="crew-selector" aria-label="Choose a team member">
+          <button class="crew-select-btn active" type="button" data-crew-select="0">Kaves</button><button class="crew-select-btn" type="button" data-crew-select="1">Hudson</button><button class="crew-select-btn" type="button" data-crew-select="2">Manish</button><button class="crew-select-btn" type="button" data-crew-select="3">Zohaib</button><button class="crew-select-btn" type="button" data-crew-select="4">Saksham</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="crew-final">
+      <div class="crew-final-box reveal">
+        <p class="eyebrow">The crew is the engine</p>
+        <h2>Every frame needs people.</h2>
+        <p>
+          Actors, camera, crew, management, and direction all connect to make one thing happen:
+          a real production. This is the core team helping Sinclair Film Studios turn ideas into finished scenes.
+        </p>
+      </div>
+    </section>
+  </section>
+
 </div>
-
-<script>
-const slides = Array.from(document.querySelectorAll('.slide'));
-const dots = Array.from(document.querySelectorAll('.dot'));
-const counter = document.getElementById('counter');
-const progressFill = document.getElementById('progressFill');
-const soundBtn = document.getElementById('soundBtn');
-const fullBtn = document.getElementById('fullBtn');
-const startShow = document.getElementById('startShow');
-const soundGate = document.getElementById('soundGate');
-const deck = document.getElementById('deck');
-let index = 0;
-let audioCtx = null;
-let soundOn = false;
-let hum = null;
-let humGain = null;
-
-function audio() {
-  if(!audioCtx) {
-    const AC = window.AudioContext || window.webkitAudioContext;
-    if(!AC) return null;
-    audioCtx = new AC();
-  }
-  if(audioCtx.state === 'suspended') audioCtx.resume();
-  return audioCtx;
-}
-function tone(freq, dur=.12, type='sine', gain=.03, delay=0, bend=null) {
-  if(!soundOn) return;
-  const ctx = audio(); if(!ctx) return;
-  const t = ctx.currentTime + delay;
-  const o = ctx.createOscillator();
-  const g = ctx.createGain();
-  o.type = type;
-  o.frequency.setValueAtTime(freq, t);
-  if(bend) o.frequency.exponentialRampToValueAtTime(bend, t+dur);
-  g.gain.setValueAtTime(.0001, t);
-  g.gain.exponentialRampToValueAtTime(gain, t+.015);
-  g.gain.exponentialRampToValueAtTime(.0001, t+dur);
-  o.connect(g); g.connect(ctx.destination);
-  o.start(t); o.stop(t+dur+.04);
-}
-function noise(dur=.25, gain=.025, freq=1000) {
-  if(!soundOn) return;
-  const ctx = audio(); if(!ctx) return;
-  const buffer = ctx.createBuffer(1, Math.max(1, Math.floor(ctx.sampleRate*dur)), ctx.sampleRate);
-  const data = buffer.getChannelData(0);
-  for(let i=0;i<data.length;i++) data[i]=(Math.random()*2-1)*Math.pow(1-i/data.length,2.1);
-  const src = ctx.createBufferSource();
-  const g = ctx.createGain();
-  const f = ctx.createBiquadFilter();
-  f.type='lowpass'; f.frequency.value=freq; g.gain.value=gain;
-  src.buffer=buffer; src.connect(f); f.connect(g); g.connect(ctx.destination); src.start();
-}
-function sfx(kind) {
-  if(kind==='next') { noise(.28,.035,1450); tone(110,.28,'sine',.035,0,74); tone(760,.16,'triangle',.026,.04,1180); }
-  if(kind==='prev') { noise(.20,.022,900); tone(520,.14,'triangle',.025,0,280); }
-  if(kind==='tap') { tone(640,.08,'sine',.02,0,920); tone(1280,.08,'triangle',.014,.03,1620); }
-  if(kind==='impact') { noise(.36,.05,1800); tone(64,.45,'sine',.055,0,42); tone(340,.35,'triangle',.035,.06,760); }
-  if(kind==='soft') { tone(900,.1,'sine',.012,0,1260); }
-}
-function startHum() {
-  const ctx = audio(); if(!ctx || hum) return;
-  hum = ctx.createOscillator(); humGain = ctx.createGain();
-  hum.type='sine'; hum.frequency.value=52; humGain.gain.value=.0001;
-  hum.connect(humGain); humGain.connect(ctx.destination); hum.start();
-  humGain.gain.exponentialRampToValueAtTime(.009, ctx.currentTime+1.2);
-}
-function toggleSound(force) {
-  soundOn = force !== undefined ? force : !soundOn;
-  soundBtn.textContent = soundOn ? 'Sound On' : 'Sound Off';
-  soundBtn.classList.toggle('sound-on', soundOn);
-  if(soundOn) { audio(); startHum(); sfx('impact'); }
-  else if(humGain && audioCtx) { humGain.gain.exponentialRampToValueAtTime(.0001, audioCtx.currentTime+.3); hum=null; humGain=null; }
-}
-function go(next, dir=1) {
-  const target = Math.max(0, Math.min(slides.length-1, next));
-  if(target === index) return;
-  slides[index].classList.add('leaving');
-  slides[index].classList.remove('active');
-  dots[index].classList.remove('active');
-  index = target;
-  slides[index].classList.remove('leaving');
-  slides[index].classList.add('active');
-  dots[index].classList.add('active');
-  update();
-  sfx(dir>0?'next':'prev');
-  setTimeout(()=>slides.forEach(s=>s.classList.remove('leaving')), 800);
-}
-function update() {
-  counter.textContent = String(index+1).padStart(2,'0') + ' / ' + String(slides.length).padStart(2,'0');
-  progressFill.style.width = ((index+1)/slides.length*100) + '%';
-  location.hash = 'slide-' + (index+1);
-}
-function next(){ go(index+1,1) }
-function prev(){ go(index-1,-1) }
-
-document.getElementById('next').addEventListener('click', next);
-document.getElementById('prev').addEventListener('click', prev);
-dots.forEach(d=>d.addEventListener('click', ()=>{ sfx('tap'); go(Number(d.dataset.go), Number(d.dataset.go)>index?1:-1); }));
-soundBtn.addEventListener('click', ()=>toggleSound());
-fullBtn.addEventListener('click', ()=>{ sfx('tap'); document.documentElement.requestFullscreen?.(); });
-startShow.addEventListener('click', ()=>{ toggleSound(true); soundGate.classList.add('hidden'); document.documentElement.requestFullscreen?.(); });
-
-document.addEventListener('keydown', e=>{
-  if(e.key==='ArrowRight' || e.key===' ' || e.key==='PageDown') { e.preventDefault(); next(); }
-  if(e.key==='ArrowLeft' || e.key==='PageUp') { e.preventDefault(); prev(); }
-  if(e.key.toLowerCase()==='f') document.documentElement.requestFullscreen?.();
-  if(e.key.toLowerCase()==='m') toggleSound();
-});
-deck.addEventListener('click', e=>{
-  if(e.target.closest('button') || e.target.closest('iframe')) return;
-  next();
-});
-
-let sx=0, sy=0;
-deck.addEventListener('touchstart', e=>{ sx=e.touches[0].clientX; sy=e.touches[0].clientY; }, {passive:true});
-deck.addEventListener('touchend', e=>{
-  const dx=e.changedTouches[0].clientX-sx;
-  if(Math.abs(dx)>55) dx<0?next():prev();
-}, {passive:true});
-
-// Canvas particles
-const canvas = document.getElementById('starfield');
-const ctx = canvas.getContext('2d');
-let p = [];
-function resize() {
-  canvas.width = innerWidth; canvas.height = innerHeight;
-  p = Array.from({length: Math.min(220, Math.floor(innerWidth/6))}, ()=>({
-    x: Math.random()*canvas.width, y: Math.random()*canvas.height,
-    r: Math.random()*1.8+.2, vx:(Math.random()-.5)*.16, vy:Math.random()*.26+.04,
-    a:Math.random()*.62+.15
-  }));
-}
-function draw() {
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  for(const s of p) {
-    s.x += s.vx + Math.sin(Date.now()/3000+s.y)*.03; s.y += s.vy;
-    if(s.y>canvas.height+8){s.y=-8;s.x=Math.random()*canvas.width}
-    if(s.x< -8) s.x=canvas.width+8; if(s.x>canvas.width+8) s.x=-8;
-    ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-    ctx.fillStyle='rgba(255,255,255,'+s.a+')'; ctx.fill();
-  }
-  for(let i=0;i<p.length;i+=2) {
-    for(let j=i+1;j<p.length;j+=12) {
-      const dx=p[i].x-p[j].x, dy=p[i].y-p[j].y, d=Math.sqrt(dx*dx+dy*dy);
-      if(d<90) {
-        ctx.strokeStyle='rgba(73,231,255,'+(0.06*(1-d/90))+')';
-        ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(p[i].x,p[i].y); ctx.lineTo(p[j].x,p[j].y); ctx.stroke();
-      }
-    }
-  }
-  requestAnimationFrame(draw);
-}
-resize(); draw(); addEventListener('resize', resize);
-const hashMatch = location.hash.match(/slide-(\d+)/);
-if(hashMatch) {
-  const start = Math.max(0, Math.min(slides.length-1, Number(hashMatch[1])-1));
-  slides[index].classList.remove('active'); dots[index].classList.remove('active');
-  index = start; slides[index].classList.add('active'); dots[index].classList.add('active');
-}
-update();
-</script>
-</body>
-</html>
+<footer><a href="#hero">SFS / SINCLAIR FILM STUDIOS</a><span>MADE OF IDEAS. MADE BY US.</span><a href="#join">Your scene is next ↗</a></footer><noscript><p class="noscript">Enable JavaScript to use the role quiz and interactive crew profiles. Meeting information and the classroom invite are available below.</p></noscript></body></html>
