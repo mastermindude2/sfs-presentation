@@ -1,53 +1,50 @@
-# Sinclair Film Studios — Cinema Edition
+# Sinclair Film Studios — Cinematic Universe Edition
 
-A complete static website. No installation, build step, API key, or paid service is needed.
+This is a static GitHub Pages website. It does not need an install step, server runtime, API key, external font, image CDN, or audio CDN.
 
-## Put it on GitHub Pages
+## Publish
 
-1. Extract this ZIP first.
-2. Upload `index.html`, `styles.css`, `app.js`, `.nojekyll`, and the entire `assets` folder to the top level of your GitHub repository. Upload the extracted files, not the ZIP. Keep the folder names and capitalization unchanged.
-3. In your repository, open **Settings → Pages**.
-4. Under **Build and deployment**, choose **Deploy from a branch**.
-5. Choose **main** and **/ (root)**, then **Save**.
-6. Wait for GitHub to finish publishing. The Pages settings will show your website address.
+1. Extract the ZIP.
+2. Upload the extracted files to the top level of your repository. Keep `assets/` and every file name unchanged.
+3. In GitHub, open **Settings → Pages**.
+4. Choose **Deploy from a branch**, select your default branch, select **/ (root)**, and save.
 
-If your repository already has a site, replace its old site files with these files. Do not place this package inside an extra folder. If your default branch has another name, choose that branch instead of main.
+GitHub Pages looks for `index.html` in the selected publishing source. Official instructions: https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site
 
-Official guide: https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site
+## What changed
 
-## Preview on your computer
+This edition is a dense, interactive sci-fi experience rather than a minimalist landing page:
 
-Open `index.html` after extracting the package. All artwork, portraits, styles, quiz data, and sounds work locally. The classroom invite itself needs internet access and may require Google sign-in. Clipboard copying can be restricted on local files; if blocked, the full invite appears for manual copying.
+- A locally bundled Three.js renderer powers the stellar engine and crew constellation. The hero engine is made from animated 3D geometry: emissive icosahedron core, layered torus rings, orbiting debris, additive glows, lighting, drag rotation, and raycast click detection.
+- The crew view uses five individually tilted 3D orbital planes, animated satellites, emissive bodies, halos, and the supplied crew portraits mapped onto the satellites. Drag the galaxy or click a satellite.
+- The background starfield is generated locally with several depth layers, drift, twinkle, and occasional diffraction-like starbursts.
+- The role finder uses a 60-question bank assembled from ten project contexts. Each mission selects ten questions and four easy-to-answer choices, with balanced role exposure and an auditable evidence trail on the result.
+- The original club information, process, department descriptions, five crew profiles, biographies, quotations, meeting times, quiz roles, Google Classroom invite, and QR code are preserved.
+- Five hidden signals are discoverable: the stellar core, warp-drive ribbon, three logo clicks, every role department, and the final credit. The archive dock tracks them.
+- Sound remains opt-in and synthesized locally. Motion and FX can be paused independently, and reduced-motion preferences are respected.
 
-## Included
+## Interaction map
 
-- Original club information, meeting times, six department descriptions, production process, project types, and actor recruitment message.
-- Original five crew portraits, biographies, quotations, selectable profiles, moving portrait orbit, and orbit pause.
-- Original ten-question role finder, ten role profiles, scoring weights, acting preference, back button, ranked results, and retry.
-- New cinematic art direction, generated lens artwork, responsive layout, pointer parallax, page entrances, animated typography, and role reveal sequence.
-- Opt-in synthesized sound: layered atmosphere, navigation sweeps, hover cues, selection tones, and result chords. Volume control appears when sound is enabled. Audio pauses in background tabs.
-- Motion pause, automatic reduced-motion support, keyboard focus indicators, mobile navigation, and browser back/forward navigation.
-- Direct classroom invite, downloadable/local QR artwork, class code, and copy-invite action.
+- Drag the hero stellar engine to rotate it. Click the core to recover a signal.
+- Use **Engage warp drive** to trigger the page transition.
+- Use the role lab tabs to tune the department frequency. Visiting every tab reveals a signal.
+- Open **Find Your Role**, start a mission, and answer ten prompts. The same question is not repeated within a mission.
+- Open **Crew** and drag the constellation. Orbit lines are visible; click a crew satellite to lock onto its profile.
+- Click the bottom credit, the SFS logo three times, or the archive dock to reveal the hidden transmission log.
+- Use **Sound On** and the volume slider for the layered synthetic score. **FX: Quiet** reduces the visual effect layer.
 
-Classroom: https://classroom.google.com/c/ODQ2OTIzODA3MjM0?cjc=sgvedclk
+## Files
 
-Class code: **sgvedclk**
+- `index.html`: content, routes, accessible structure, invite, and QR.
+- `styles.css`: visual system, depth effects, responsive layouts, archive dialog, and motion rules.
+- `quiz.js`: 60-question generator and scoring model.
+- `app.js`: routes, quiz UI, sound, crew profile selection, discoveries, and controls.
+- `universe.js`: Three.js hero and crew scenes plus the animated starfield.
+- `assets/three.module.js`: locally bundled Three.js engine.
+- `assets/`: supplied portraits/logo, classroom QR, and the Three.js license.
 
-## Editing
+The classroom invite is `https://classroom.google.com/c/ODQ2OTIzODA3MjM0?cjc=sgvedclk` and the code is `sgvedclk`.
 
-- `index.html`: club information, profiles, links, and page structure.
-- `styles.css`: colors, typography, layout, responsive rules, and animations.
-- `app.js`: original quiz data and department descriptions, interactive behavior, scoring, and sound synthesis.
-- `assets/`: supplied crew photos and logo, original generated lens art, and classroom QR.
+## Verification
 
-The role finder is a local interest quiz, not an AI service. Its original acting recruitment preference is retained and explained alongside results. No answers are sent to a server or saved.
-
-If you change the classroom invitation, replace both links in `index.html`, the copy URL in `app.js`, and the QR image.
-
-## Checks completed
-
-JavaScript syntax; initialization and interaction logic in a simulated DOM; rapid-click protection; quiz back and retry; 1,000 randomized scoring paths; department and crew selection; route switching; original content preservation; local file and anchor references; and ZIP integrity.
-
-The local preview responds successfully. Full visual browser/device testing and end-to-end Google Classroom enrollment were not performed. The QR was generated directly from the exact supplied invitation using ReportLab.
-
-All paths are relative, so the site supports both a GitHub account website and a repository website. No external font, script, image, or audio CDN is required.
+The three JavaScript files pass syntax checks. The local server responds with `200` for the root page and module route. The package is static and all Three.js and image dependencies are relative local paths, so it works under both an account site and a repository site. Full device/browser visual QA was not performed in this pass.
