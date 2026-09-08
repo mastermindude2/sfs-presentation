@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#10100f"><meta name="description" content="Sinclair Film Studios. Make films, find your creative role, meet the crew, and join our studio."><title>SFS — Enter the Cinematic Universe</title><link rel="icon" href="assets/sfs-logo.webp"><link rel="stylesheet" href="styles.css"><script src="quiz.js" defer></script><script src="original-data.js" defer></script><script src="app.js" defer></script><script type="module" src="universe.js"></script></head><body><canvas id="starfield" aria-hidden="true"></canvas><div class="nebula-veil" aria-hidden="true"></div><div id="jumpFX" aria-hidden="true"></div><div id="sfs2026" style="--sfs-logo-url: url('assets/sfs-logo.webp');">
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#030511"><meta name="description" content="Sinclair Film Studios. Make films, find your creative role, meet the crew, and join our studio."><title>SFS — A Universe in Every Frame</title><link rel="icon" href="assets/sfs-logo.webp"><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="immersive.css"><link rel="stylesheet" href="cinema.css"><script defer src="physics.js"></script><script defer src="quiz.js"></script><script defer src="original-data.js"></script><script defer src="app.js"></script><script defer src="assets/three.bundle.js"></script><script defer src="assets/portraits.js"></script><script defer src="universe.js"></script><script defer src="cinema.js"></script></head><body><canvas id="starfield" aria-hidden="true"></canvas><div class="nebula-veil" aria-hidden="true"></div><div id="jumpFX" aria-hidden="true"></div><div id="sfs2026" style="--sfs-logo-url: url('assets/sfs-logo.webp');">
   
   
   
@@ -27,9 +27,9 @@
   </nav>
 
   <main id="sfsHomePage" class="sfs-site-page active-page">
-    <section class="sfs-panel sfs-hero" id="hero"><div id="heroStage" class="model-stage" role="region" aria-label="Interactive 3D stellar engine"><div class="model-loading">INITIALIZING STELLAR ENGINE…</div></div><div class="orbital-caption"><span>STELLAR ENGINE / SFS–01</span><strong>A universe of untold stories.</strong><small>Drag to orbit · Click the core · Scroll to explore</small></div><div class="frame-label"><span><i></i> SIGNAL LIVE / SINCLAIR</span><span>SECTOR 05 / CREATIVE ORBIT</span></div>
+    <section class="sfs-panel sfs-hero" id="hero"><div id="heroStage" class="model-stage" role="region" tabindex="0" aria-label="Interactive 3D film projector"><div class="model-loading"></div></div><div class="orbital-caption"><span>Light. Film. A little imagination.</span><strong>A universe of untold stories.</strong><small>Drag to turn · Tap to roll film · Pinch to zoom</small></div><div class="frame-label"><span><i></i> SINCLAIR FILM STUDIOS</span><span>FRIDAY / AFTER SCHOOL</span></div>
       <div class="sfs-hero-copy reveal">
-        <p class="eyebrow">Transmission 001 / Sinclair Film Studios</p>
+        <p class="eyebrow">A universe in every frame.</p>
         <h1>
           Make school<br>feel like a
           <span class="gradient-word" id="rotatingWord">movie.</span><span class="title-coordinate">STORIES WITHOUT LIMITS. PEOPLE LIKE YOU.</span>
@@ -48,9 +48,9 @@
       
     </section>
 
-    <div class="mission-ribbon"><span><i></i> RECRUITMENT OPEN</span><span>MAIN RENDEZVOUS <b>FRIDAY / AFTER SCHOOL</b></span><button id="warpButton">Engage warp drive ↗</button></div><div class="reel-strip" aria-label="Studio departments"><span>ACT</span><b>✳</b><span>WRITE</span><b>✳</b><span>FILM</span><b>✳</b><span>EDIT</span><b>✳</b><span>CREATE</span><b>✳</b></div><section class="sfs-panel story-panel" id="about">
+    <div class="mission-ribbon"><span><i></i> RECRUITMENT OPEN</span><span>AT THE STUDIO <b>FRIDAY / AFTER SCHOOL</b></span><button id="warpButton">Roll the opening titles ↗</button></div><div class="reel-strip" aria-label="Studio departments"><span>ACT</span><b>✳</b><span>WRITE</span><b>✳</b><span>FILM</span><b>✳</b><span>EDIT</span><b>✳</b><span>CREATE</span><b>✳</b></div><section class="sfs-panel story-panel" id="about">
       <div class="sticky-word reveal">
-        <p class="eyebrow">01 / The mission</p>
+        <p class="eyebrow">01 / Behind the picture</p>
         <h2>Not a meeting. A studio.</h2>
       </div>
       <div class="story-stack">
@@ -74,12 +74,12 @@
 
     <section class="sfs-panel roles-panel" id="roles">
       <div class="center reveal">
-        <p class="eyebrow">02 / Find your frequency</p>
+        <p class="eyebrow">02 / The departments</p>
         <h2>There is a place for you on set.</h2>
-        <p class="section-sub">Different instincts. One universe. Tap a department to tune in.</p>
+        <p class="section-sub">Different instincts. One film. Explore the people who make it happen.</p>
       </div>
 
-      <div class="role-lab reveal"><div class="department-art" aria-hidden="true"><div class="spectrum-bars"><i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i><i style="--i:3"></i><i style="--i:4"></i><i style="--i:5"></i><i style="--i:6"></i><i style="--i:7"></i><i style="--i:8"></i><i style="--i:9"></i><i style="--i:10"></i><i style="--i:11"></i><i style="--i:12"></i><i style="--i:13"></i><i style="--i:14"></i><i style="--i:15"></i><i style="--i:16"></i><i style="--i:17"></i><i style="--i:18"></i><i style="--i:19"></i><i style="--i:20"></i><i style="--i:21"></i><i style="--i:22"></i><i style="--i:23"></i><i style="--i:24"></i><i style="--i:25"></i><i style="--i:26"></i><i style="--i:27"></i><i style="--i:28"></i><i style="--i:29"></i><i style="--i:30"></i><i style="--i:31"></i></div><span>DEPARTMENT / <b id="deptNumber">01</b></span><strong id="deptWord">ACT.</strong><small>YOUR PLACE IN THE PICTURE</small></div>
+      <div class="role-lab reveal"><div class="department-art" aria-hidden="true"><canvas id="departmentCanvas"></canvas><div class="spectrum-bars"><i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i><i style="--i:3"></i><i style="--i:4"></i><i style="--i:5"></i><i style="--i:6"></i><i style="--i:7"></i><i style="--i:8"></i><i style="--i:9"></i><i style="--i:10"></i><i style="--i:11"></i><i style="--i:12"></i><i style="--i:13"></i><i style="--i:14"></i><i style="--i:15"></i><i style="--i:16"></i><i style="--i:17"></i><i style="--i:18"></i><i style="--i:19"></i><i style="--i:20"></i><i style="--i:21"></i><i style="--i:22"></i><i style="--i:23"></i><i style="--i:24"></i><i style="--i:25"></i><i style="--i:26"></i><i style="--i:27"></i><i style="--i:28"></i><i style="--i:29"></i><i style="--i:30"></i><i style="--i:31"></i></div><span>DEPARTMENT / <b id="deptNumber">01</b></span><strong id="deptWord">ACT.</strong><small>YOUR PLACE IN THE PICTURE</small></div>
         
 
         <div class="role-console">
@@ -102,11 +102,11 @@
 
     <section class="sfs-panel process-panel" id="process">
       <div class="center reveal">
-        <p class="eyebrow">03 / Production flight path</p>
+        <p class="eyebrow">03 / The making of a film</p>
         <h2>From idea to premiere.</h2>
       </div>
 
-      <div class="timeline">
+      <div class="edit-playhead" aria-hidden="true"><span>YOUR FILM / FROM FIRST IDEA TO FINAL CUT</span><span id="editTimecode">00:00:00:00</span></div><div class="timeline">
         <div class="timeline-line" aria-hidden="true"></div>
         <article class="step reveal">
           <b>01</b>
@@ -143,7 +143,7 @@
           <h2>Short films. Trailers. Promos. Behind the scenes.</h2>
           <p>We are building a creative club that can make videos for stories, events, announcements, competitions, and school culture.</p>
         </div>
-        <div class="floating-scenes">
+        <div class="floating-scenes"><canvas id="filmmakingSketch" width="640" height="230" aria-label="Animated editing waveform and film frames"></canvas>
           <div class="scene-card scene-a tilt reveal">
             
             <h3>Short Films</h3>
@@ -193,7 +193,7 @@
             <b>Actors, editors, writers, crew, designers</b>
           </div>
         </div>
-        <div class="classroom-invite"><div><p class="eyebrow">Your next scene starts here</p><h3>Your coordinates.<br>Your crew.</h3><p>Join our Google Classroom for Sinclair Film Studios.</p><a class="sfs-button" href="https://classroom.google.com/c/ODQ2OTIzODA3MjM0?cjc=sgvedclk" target="_blank" rel="noopener noreferrer">Join Google Classroom ↗</a><div class="invite-code">Class code <strong>sgvedclk</strong><button id="copyInvite" type="button">Copy invite</button></div><p id="copyStatus" role="status"></p></div><a href="https://classroom.google.com/c/ODQ2OTIzODA3MjM0?cjc=sgvedclk" target="_blank" rel="noopener noreferrer" class="qr-link"><img src="assets/classroom-qr.png" width="216" height="216" alt="QR code to join Sinclair Film Studios Google Classroom"><span>SCAN TO JOIN ↗</span></a></div><p class="final-line">The next film only happens when someone decides to show up.</p>
+        <div class="classroom-invite"><div><p class="eyebrow">Your next scene starts here</p><h3>Your name.<br>In the credits.</h3><p>Join our Google Classroom for Sinclair Film Studios.</p><a class="sfs-button" href="https://classroom.google.com/c/ODQ2OTIzODA3MjM0?cjc=sgvedclk" target="_blank" rel="noopener noreferrer">Join Google Classroom ↗</a><div class="invite-code">Class code <strong>sgvedclk</strong><button id="copyInvite" type="button">Copy invite</button></div><p id="copyStatus" role="status"></p></div><a href="https://classroom.google.com/c/ODQ2OTIzODA3MjM0?cjc=sgvedclk" target="_blank" rel="noopener noreferrer" class="qr-link"><img src="assets/classroom-qr.png" width="216" height="216" alt="QR code to join Sinclair Film Studios Google Classroom"><span>SCAN TO JOIN ↗</span></a></div><p class="final-line">The next film only happens when someone decides to show up.</p>
       </div>
     </section>
   </main>
@@ -202,29 +202,29 @@
   <section id="sfsFinderPage" class="sfs-finder-page hidden-page" aria-live="polite">
     <div class="finder-top">
       <a class="sfs-button ghost magnetic back-home" href="#hero" data-route="home">← Back to Home</a>
-      <span>Interactive SFS Role Scan</span>
+      <span>Find your place in the production</span>
     </div>
 
     
 
-    <div class="finder-stage"><div class="scanner-decoration" aria-hidden="true">SFS / PERSONALITY SPECTROMETER <span>● ONLINE</span></div>
+    <div class="finder-stage">
       <div class="finder-intro active" id="finderIntro">
         <p class="eyebrow">Find out who you are</p>
-        <h2>Decode your<br><em>creative DNA.</em></h2><div class="scan-specs"><span>60 QUESTION BANK</span><span>10 PER MISSION</span><span>10 CREATIVE ROLES</span></div>
+        <h2>Find your<br><em>place on set.</em></h2><div class="scan-specs"><span>60 QUESTION BANK</span><span>10 QUICK QUESTIONS</span><span>10 CREATIVE ROLES</span></div>
         <p>
           Answer 10 quick questions, drawn from a bigger universe of possibilities. Discover the roles that fit how you like to create.
         </p>
-        <button class="sfs-button magnetic finder-start" id="startFinder">Start the Scan</button>
-        <p class="finder-note">60 questions in the archive. 10 balanced picks per mission. About two minutes. Your answers stay on this device during the quiz.</p>
+        <button class="sfs-button magnetic finder-start" id="startFinder">Find My Role</button>
+        <p class="finder-note">60 questions in the bank. 10 balanced picks per quiz. About two minutes. Your answers stay on this device during the quiz.</p>
       </div>
 
       <div class="finder-quiz" id="finderQuiz">
         <div class="quiz-header">
           <span id="finderCount">Question 1 / 10</span>
-          <span id="finderMode">Signal calibration</span>
+          <span id="finderMode">The first take</span>
         </div>
 
-        <div class="finder-progress" role="progressbar" aria-label="Quiz progress" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0">
+        <div class="quiz-film-frames" aria-hidden="true"><span>01</span><span>02</span><span>03</span><span>04</span><span>05</span><span>06</span><span>07</span><span>08</span><span>09</span><span>10</span></div><div class="finder-progress" role="progressbar" aria-label="Quiz progress" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0">
           <div id="finderProgress"></div>
         </div>
 
@@ -242,8 +242,8 @@
           <div class="scan-cinema">
             
             <div class="scan-copy">
-              <p class="eyebrow">Role lock sequence</p>
-              <h2 id="scanPhaseTitle">Initializing creative scan</h2>
+              <p class="eyebrow">Putting your story together</p>
+              <h2 id="scanPhaseTitle">Following your creative interests</h2>
               <p id="scanPhaseText">Collecting your choices and loading your cinematic profile.</p>
               <div class="scan-meter"><div id="scanMeterFill"></div></div>
               <div class="scan-roles-strip" id="scanRolesStrip"></div>
@@ -252,7 +252,7 @@
         </div>
 
         <div class="result-glass" id="resultGlass">
-          <p class="eyebrow">Your strongest creative signal</p>
+          <p class="eyebrow">Your place in the production</p>
           <h2 id="resultRole" tabindex="-1">Actor</h2>
           <p id="resultDesc"></p>
           <div class="result-bars" id="resultBars"></div><p class="score-note" id="scoreNote"></p><div id="resultEvidence"></div>
@@ -273,27 +273,27 @@
   <section id="sfsCrewPage" class="sfs-crew-page hidden-page" aria-live="polite">
     <div class="crew-top">
       <a class="sfs-button ghost magnetic crew-home" href="#hero" data-route="home">← Back to Home</a>
-      <span>CREW CONSTELLATION / 05 SIGNATURES</span>
+      <span>Meet the main crew</span>
     </div>
 
     <section class="crew-hero">
       <div class="crew-hero-copy reveal">
         <p class="eyebrow">Sinclair Film Studios</p>
-        <h1>The people.<br>The <em>gravity.</em></h1>
+        <h1>The people.<br>The <em>credits.</em></h1>
         <p>
           The people behind the scenes, in front of the camera, and leading the vision.
           Built like a film studio. Moving like a production team.
         </p>
         <div class="crew-actions">
-          <button class="sfs-button magnetic" type="button" id="crewPauseBtn">Pause Orbit</button>
+          <button class="sfs-button magnetic" type="button" id="crewPauseBtn">Pause film</button>
           <a class="sfs-button ghost magnetic" href="#crewSpotlight">Browse Crew</a>
         </div>
       </div>
 
-      <div class="crew-orbit-area reveal" aria-label="Animated galactic crew orbit">
+      <div class="crew-orbit-area reveal" aria-label="Animated opening credits in a film constellation">
         
 
-        <div id="crewStage" class="model-stage" role="region" aria-label="Interactive 3D crew solar system"></div><div class="crew-orbit-track" id="crewOrbitTrack">
+        <div id="crewStage" class="model-stage" role="region" tabindex="0" aria-label="Interactive 3D opening credits with moving film strips"></div><div class="crew-orbit-track" id="crewOrbitTrack">
           
           <button class="crew-portrait-button" type="button" data-crew-select="0" aria-label="Show Kaves">
             <img src="assets/kaves.webp" alt="Kaves portrait">
@@ -327,7 +327,7 @@
         
         </div>
 
-        <div class="crew-orbit-note">Five crew satellites. Five tilted orbital paths. Drag the galaxy; click a satellite to meet its crew member.</div>
+        <div class="crew-orbit-note">A constellation of collaborators, threaded together on film. Drag to turn. Tap a frame to meet the person.</div>
       </div>
     </section>
 
@@ -423,4 +423,4 @@
   </section>
 
 </div>
-<aside class="discovery-dock"><button id="logButton" aria-label="Open discoveries">✧ <span id="discoveryCount">0</span>/5 signals</button><button id="qualityToggle" aria-pressed="false">FX: Full</button></aside><dialog id="discoveryDialog"><button class="dialog-close" aria-label="Close discoveries">×</button><p class="eyebrow">ARCHIVE / HIDDEN TRANSMISSIONS</p><h2>Nothing here<br>is quite empty.</h2><p>Some things reveal themselves to the curious.</p><ol id="discoveryList"></ol><p class="archive-hint">A core. A journey. A signal. A familiar sequence. A final credit.</p></dialog><div id="toast" role="status"></div><footer><a href="#hero">SFS / SINCLAIR FILM STUDIOS</a><span><button id="endCredit">NO SIGNAL IS EVER REALLY LOST.</button></span><a href="#join">Your scene is next ↗</a></footer><noscript><p class="noscript">Enable JavaScript to use the role quiz and interactive crew profiles. Meeting information and the classroom invite are available below.</p></noscript></body></html>
+<aside class="discovery-dock"><button id="logButton" aria-label="Open discoveries">✧ <span id="discoveryCount">0</span>/5 hidden scenes</button><button id="qualityToggle" aria-pressed="false">FX: Full</button></aside><dialog id="discoveryDialog"><button class="dialog-close" aria-label="Close discoveries">×</button><p class="eyebrow">THE CUTTING ROOM / HIDDEN SCENES</p><h2>Nothing here<br>is quite empty.</h2><p>Some things reveal themselves to the curious.</p><ol id="discoveryList"></ol><p class="archive-hint">Look closer. Some stories are waiting to be found.</p></dialog><div id="toast" role="status"></div><footer><a href="#hero">SFS / SINCLAIR FILM STUDIOS</a><span><button id="endCredit">STAY FOR THE POST-CREDITS SCENE.</button></span><a href="#join">Your scene is next ↗</a></footer><noscript><p class="noscript">Enable JavaScript to use the role quiz and interactive crew profiles. Meeting information and the classroom invite are available below.</p></noscript><dialog id="openingTitles" aria-label="Sinclair Film Studios opening titles"><div class="titles-copy"><small>SINCLAIR FILM STUDIOS</small><strong>A universe<br>in every frame.</strong><span>THE NEXT STORY STARTS WITH YOU.</span></div><button id="closeTitles" type="button" aria-label="Close opening titles">Back to the studio ×</button></dialog></body></html>
